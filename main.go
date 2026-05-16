@@ -1,23 +1,19 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io"
+	"STA/handlers"
 	"net/http"
-	"os"
-	"strconv"
 	"time"
-
-	"STA/models"
 )
 
-const BASE_URL = "https://ftc-api.firstinspires.org/v2.0/2025"
+var client = http.Client{
+	Timeout: 10 * time.Second,
+}
 
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /team/{teamNumber}", team)
+	mux.HandleFunc("/team/", handlers.GetTeam(client))
 
 	s := &http.Server{
 		Addr:         ":8080",
@@ -27,10 +23,12 @@ func main() {
 		IdleTimeout:  5 * time.Second,
 	}
 
-	s.ListenAndServe()
+	if err := s.ListenAndServe(); err != nil {
+		panic(err)
+	}
 }
 
-func team(w http.ResponseWriter, r *http.Request) {
+/*func team(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	teamNumberStr := r.PathValue("teamNumber")
@@ -72,36 +70,4 @@ func team(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
-func apiRequest(path string) ([]byte, int, error) {
-	client := http.Client{
-		Timeout: time.Minute * 2,
-	}
-
-	targetURL := fmt.Sprintf("%s/%s", BASE_URL, path)
-
-	req, err := http.NewRequest("GET", targetURL, nil)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	req.Header.Set("User-Agent", "STA")
-
-	req.SetBasicAuth(
-		os.Getenv("FTC_EVENTS_USERNAME"),
-		os.Getenv("FTC_EVENTS_AUTH_TOKEN"),
-	)
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, 0, err
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return body, res.StatusCode, nil
-}
+*/
