@@ -11,9 +11,17 @@ import (
 	"strings"
 )
 
+// @Summary Get team
+// @Description Returns a team by number
+// @Tags Teams
+// @Produce json
+// @Param number path int true "Team Number"
+// @Success 200 {object} models.TeamResponse
+// @Failure 404 {object} models.ErrorResponse
+// @Router /api/v1/teams/{number} [get]
 func GetTeam(client http.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const prefix = "/team/"
+		const prefix = "/api/v1/teams/"
 		if !strings.HasPrefix(r.URL.Path, prefix) {
 			http.NotFound(w, r)
 			return
@@ -47,6 +55,6 @@ func GetTeam(client http.Client) http.HandlerFunc {
 			return
 		}
 
-		utils.WriteJSON(w, response.Teams[0])
+		utils.WriteJSON(w, 200, response.Teams[0])
 	}
 }

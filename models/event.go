@@ -19,3 +19,6 @@ type Event struct {
 	DateEnd       string   `json:"dateEnd"`
 }
 
+type EventResponse struct {
+	Events []Event `json:"events"`
+}

@@ -1,0 +1,242 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a replacement of FTC Events api as it always goes down and inconsistent with its changes",
+        "title": "Second Tech API",
+        "contact": {
+            "name": "Bisher Almasri",
+            "email": "bisherk.almasri@gmail.com"
+        },
+        "license": {
+            "name": "CC BY NC 4.0",
+            "url": "https://creativecommons.org/licenses/by-nc/4.0/legalcode.txt"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/api/v1/teams/{number}": {
+            "get": {
+                "description": "Returns a team by number",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Get team",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Team Number",
+                        "name": "number",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TeamResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{number}": {
+            "get": {
+                "description": "Returns a event by code",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get event",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Event Code",
+                        "name": "number",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.EventResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Event": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "dateEnd": {
+                    "type": "string"
+                },
+                "dateStart": {
+                    "type": "string"
+                },
+                "divisionCode": {
+                    "type": "string"
+                },
+                "eventId": {
+                    "type": "string"
+                },
+                "fieldCount": {
+                    "type": "integer"
+                },
+                "hybrid": {
+                    "type": "boolean"
+                },
+                "liveStreamUrl": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "remote": {
+                    "type": "boolean"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "webcasts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "website": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.EventResponse": {
+            "type": "object",
+            "properties": {
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Event"
+                    }
+                }
+            }
+        },
+        "models.Team": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "displayLocation": {
+                    "type": "string"
+                },
+                "displayTeamNumber": {
+                    "type": "string"
+                },
+                "districtCode": {
+                    "type": "string"
+                },
+                "homeCMP": {
+                    "type": "string"
+                },
+                "homeRegion": {
+                    "type": "string"
+                },
+                "nameFull": {
+                    "type": "string"
+                },
+                "nameShort": {
+                    "type": "string"
+                },
+                "robotName": {
+                    "type": "string"
+                },
+                "rookieYear": {
+                    "type": "integer"
+                },
+                "schoolName": {
+                    "type": "string"
+                },
+                "stateProv": {
+                    "type": "string"
+                },
+                "teamId": {
+                    "type": "integer"
+                },
+                "teamNumber": {
+                    "type": "integer"
+                },
+                "teamProfileId": {
+                    "type": "integer"
+                },
+                "website": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TeamResponse": {
+            "type": "object",
+            "properties": {
+                "teams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Team"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}

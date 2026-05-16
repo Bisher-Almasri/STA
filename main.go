@@ -1,3 +1,18 @@
+// @title           Second Tech API
+// @version         1.0
+// @description     This is a replacement of FTC Events api as it always goes down and inconsistent with its changes
+
+// @contact.name   Bisher Almasri
+// @contact.email  bisherk.almasri@gmail.com
+
+// @license.name  CC BY NC 4.0
+// @license.url   https://creativecommons.org/licenses/by-nc/4.0/legalcode.txt
+
+// @host      localhost:8080
+// @BasePath  /api/v1
+
+// @securityDefinitions.basic  BasicAuth
+
 package main
 
 import (
@@ -13,7 +28,23 @@ var client = http.Client{
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/team/", handlers.GetTeam(client))
+
+	mux.Handle(
+	"/docs/",
+	http.StripPrefix(
+		"/docs/",
+		http.FileServer(http.Dir("./docs")),
+	))
+
+		mux.Handle(
+	"/static/",
+	http.StripPrefix(
+		"/static/",
+		http.FileServer(http.Dir("./static")),
+	))
+
+	mux.HandleFunc("/api/v1/teams/", handlers.GetTeam(client))
+	mux.HandleFunc("/api/v1/events/", handlers.GetEvent(client))
 
 	s := &http.Server{
 		Addr:         ":8080",
@@ -27,47 +58,3 @@ func main() {
 		panic(err)
 	}
 }
-
-/*func team(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	teamNumberStr := r.PathValue("teamNumber")
-
-	teamNumber, err := strconv.Atoi(teamNumberStr)
-	if err != nil {
-		http.Error(w, "Invalid team number", http.StatusBadRequest)
-		return
-	}
-
-	body, statusCode, err := apiRequest(
-		fmt.Sprintf("teams?teamNumber=%d", teamNumber),
-	)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if statusCode != http.StatusOK {
-		http.Error(w, string(body), statusCode)
-		return
-	}
-
-	var teamResponse models.TeamResponse
-
-	if err := json.Unmarshal(body, &teamResponse); err != nil {
-		http.Error(w, "Failed to decode team response", http.StatusBadGateway)
-		return
-	}
-
-	if len(teamResponse.Teams) == 0 {
-		http.Error(w, "Team not found", http.StatusNotFound)
-		return
-	}
-
-	if err := json.NewEncoder(w).Encode(teamResponse.Teams[0]); err != nil {
-		http.Error(w, "Failed to encode team response", http.StatusInternalServerError)
-		return
-	}
-}
-*/

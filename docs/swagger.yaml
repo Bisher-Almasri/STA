@@ -1,0 +1,160 @@
+basePath: /api/v1
+definitions:
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+      status:
+        type: integer
+    type: object
+  models.Event:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      code:
+        type: string
+      country:
+        type: string
+      dateEnd:
+        type: string
+      dateStart:
+        type: string
+      divisionCode:
+        type: string
+      eventId:
+        type: string
+      fieldCount:
+        type: integer
+      hybrid:
+        type: boolean
+      liveStreamUrl:
+        type: string
+      name:
+        type: string
+      remote:
+        type: boolean
+      state:
+        type: string
+      webcasts:
+        items:
+          type: string
+        type: array
+      website:
+        type: string
+    type: object
+  models.EventResponse:
+    properties:
+      events:
+        items:
+          $ref: '#/definitions/models.Event'
+        type: array
+    type: object
+  models.Team:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      displayLocation:
+        type: string
+      displayTeamNumber:
+        type: string
+      districtCode:
+        type: string
+      homeCMP:
+        type: string
+      homeRegion:
+        type: string
+      nameFull:
+        type: string
+      nameShort:
+        type: string
+      robotName:
+        type: string
+      rookieYear:
+        type: integer
+      schoolName:
+        type: string
+      stateProv:
+        type: string
+      teamId:
+        type: integer
+      teamNumber:
+        type: integer
+      teamProfileId:
+        type: integer
+      website:
+        type: string
+    type: object
+  models.TeamResponse:
+    properties:
+      teams:
+        items:
+          $ref: '#/definitions/models.Team'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: bisherk.almasri@gmail.com
+    name: Bisher Almasri
+  description: This is a replacement of FTC Events api as it always goes down and
+    inconsistent with its changes
+  license:
+    name: CC BY NC 4.0
+    url: https://creativecommons.org/licenses/by-nc/4.0/legalcode.txt
+  title: Second Tech API
+  version: "1.0"
+paths:
+  /api/v1/teams/{number}:
+    get:
+      description: Returns a team by number
+      parameters:
+      - description: Team Number
+        in: path
+        name: number
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TeamResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get team
+      tags:
+      - Teams
+  /events/{number}:
+    get:
+      description: Returns a event by code
+      parameters:
+      - description: Event Code
+        in: path
+        name: number
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.EventResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get event
+      tags:
+      - Events
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

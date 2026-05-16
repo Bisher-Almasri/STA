@@ -2,7 +2,7 @@ package models
 
 type Team struct {
 	TeamNumber        int     `json:"teamNumber"`
-	DisplayTeamNumber  *string `json:"displayTeamNumber"`
+	DisplayTeamNumber *string `json:"displayTeamNumber"`
 	TeamID            int     `json:"teamId"`
 	TeamProfileID     int     `json:"teamProfileId"`
 	NameFull          *string `json:"nameFull"`
@@ -23,4 +23,3 @@ type Team struct {
 type TeamResponse struct {
 	Teams []Team `json:"teams"`
 }
-
